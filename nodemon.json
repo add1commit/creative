@@ -1,0 +1,6 @@
+{
+  "watch": ["*"],
+  "ext": "ts,json",
+  "ignore": ["themes/*", "pages/*", "posts/*"],
+  "exec": "ts-node ./bin/server.ts"
+}
