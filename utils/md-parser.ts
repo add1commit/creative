@@ -1,7 +1,7 @@
 import md from 'marked'
 import fs from 'fs-extra'
 
-const useParser = async (path: string) => {
+const mdParser = async (path: string) => {
   const parser = require('markdown-yaml-metadata-parser')
   const raw = await fs.readFile(path, { encoding: 'utf-8' })
   const output = await parser(raw)
@@ -18,4 +18,4 @@ const useParser = async (path: string) => {
   }
 }
 
-export default useParser
+export default mdParser

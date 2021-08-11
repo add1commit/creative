@@ -1,7 +1,6 @@
 import path from 'path'
 
-export { default as useConfig } from './use-config'
-export { default as useParser } from './use-parser'
+export { default as mdParser } from './md-parser'
 
 export const resolve = (...paths: string[]) => path.join(...paths)
 
