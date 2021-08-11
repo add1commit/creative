@@ -12,6 +12,7 @@
     "@types/module-alias": "^2.0.1",
     "@types/node": "^16.4.13",
     "fs-extra": "^10.0.0",
+    "markdown-yaml-metadata-parser": "^3.0.0",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.0",
