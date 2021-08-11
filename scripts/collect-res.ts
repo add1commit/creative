@@ -1,14 +1,14 @@
 import path from 'path'
 import fs from 'fs-extra'
-import { Archive, FlattenOutput } from '../../typings/res'
-import { composePromise } from '../../utils'
+import { Archive, FlattenOutput } from '../typings/res'
+import { composePromise } from '../utils'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
 const resolve = (dir: string) => path.join(__dirname, dir)
 
-const RES_DIR = resolve('../../res')
-const CACHE_DIR = resolve('../../.cache/')
+const RES_DIR = resolve('../res')
+const CACHE_DIR = resolve('../.cache/')
 const COLLECT_SUFFIX = '.json'
 
 const readResDir = async () => {
