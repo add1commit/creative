@@ -10,6 +10,7 @@ const resolve = (dir: string) => path.join(__dirname, dir)
 const RES_DIR = resolve('../res')
 const CACHE_DIR = resolve('../.cache/')
 const COLLECT_SUFFIX = '.json'
+const MORE_TAG = '<!-- more -->'
 
 const readResDir = async () => {
   return await fs.readdir(RES_DIR)
@@ -29,10 +30,13 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
           return { name: file, children: childrenMetadata }
         }
 
-        const content = await fs.readFile(dirPath, 'utf-8')
-        const { metadata } = await extractMetadata(content)
+        const raw = await fs.readFile(dirPath, 'utf-8')
+        let { metadata, content } = await extractMetadata(raw)
+
+        content = !!content.match(MORE_TAG) ? content.split(MORE_TAG)[0] : content
+
         const url = dirPath.replace(RES_DIR, '').replace('.md', '')
-        return { name: metadata.title || file, url, metadata }
+        return { title: metadata.title || file, url, metadata, content }
       })
   )
 }

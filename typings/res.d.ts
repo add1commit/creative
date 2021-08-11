@@ -4,9 +4,10 @@ export interface Archive {
 }
 
 export interface Archive {
-  name: string
+  title: string
   url: string
   metadata: Metadata
+  content: string
 }
 
 export interface Metadata {
