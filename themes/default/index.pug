@@ -2,4 +2,6 @@ html
     head 
         title= site.title
     body 
-        h1= site.author
+        for post in posts.all
+            h1= post.title
+            .content!= post.content
