@@ -1,27 +1,24 @@
-import { Configuration } from '../typings/config'
+import { PageProps } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
-import useConfig from '../utils/use-config'
 
 class Routes {
   public path: string = '/'
   public router: Router = express.Router()
-  private config: Configuration | unknown
+
+  private props: PageProps | undefined
 
   constructor() {
-    this.initConfiguration()
     this.exec()
   }
 
   public exec() {
-    this.router.get('/', this.page)
+    this.router.get('/', this.mainPage)
   }
 
-  private async initConfiguration() {
-    this.config = await useConfig()
-  }
-
-  page = (req: Request, res: Response) => {
-    res.render('default', { site: this.config })
+  private mainPage = (req: Request, res: Response) => {
+    res.render('default', {
+      posts: []
+    })
   }
 }
 
