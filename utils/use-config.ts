@@ -1,6 +1,8 @@
 import fs from 'fs-extra'
 import YAML from 'yaml'
-import { resolve } from './index'
+import path from 'path'
+
+export const resolve = (...paths: string[]) => path.join(...paths)
 
 const CONFIG_DIR = resolve(__dirname, '../creative.yaml')
 
