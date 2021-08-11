@@ -1,8 +1,10 @@
 import md from 'marked'
 import fs from 'fs-extra'
+import { Archive } from '../typings/res'
 
-const mdParser = async (path: string) => {
-  const parser = require('markdown-yaml-metadata-parser')
+const parser = require('markdown-yaml-metadata-parser')
+
+export const mdParser = async (path: string) => {
   const raw = await fs.readFile(path, { encoding: 'utf-8' })
   const output = await parser(raw)
   const content = md(output.content)
@@ -18,4 +20,11 @@ const mdParser = async (path: string) => {
   }
 }
 
-export default mdParser
+export const contentParser = async (files: Archive[]) => {
+  return Promise.all(
+    files.map(post => {
+      post.content = md(post.content)
+      return post
+    })
+  )
+}

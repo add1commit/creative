@@ -1,6 +1,6 @@
-export interface PageProps {
+export interface Props {
   site: Site
-  posts: Function
+  posts: Posts
 }
 
 export interface Site {
@@ -14,4 +14,13 @@ export interface Site {
 export interface Theme {
   name: string
   version?: string
+}
+
+export interface Posts {
+  all: Object | undefined
+  recentPosts: () => Promise<void>
+  categories: () => Promise<void>
+  category: () => Promise<void>
+  tags: () => Promise<void>
+  tag: () => Promise<void>
 }

@@ -1,7 +1,5 @@
 import path from 'path'
 
-export { default as mdParser } from './md-parser'
-
 export const resolve = (...paths: string[]) => path.join(...paths)
 
 export const composePromise = <T>(...fns: any) => {

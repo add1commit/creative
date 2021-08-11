@@ -1,24 +1,29 @@
-import { PageProps } from '../typings/prop'
+import { Props } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
-
+import { usePosts, useSite } from '../hooks'
 class Routes {
-  public path: string = '/'
   public router: Router = express.Router()
-
-  private props: PageProps | undefined
-
+  public props: Props | undefined = undefined
   constructor() {
+    this.initState()
     this.exec()
   }
 
   public exec() {
-    this.router.get('/', this.mainPage)
+    this.router.get('/', this.renderMainPage)
   }
 
-  private mainPage = (req: Request, res: Response) => {
-    res.render('default', {
-      posts: []
-    })
+  public async initState() {
+    const site = await useSite()
+    const posts = await usePosts()
+    this.props = {
+      site,
+      posts
+    }
+  }
+
+  private renderMainPage = async (req: Request, res: Response) => {
+    res.render('default', this.props)
   }
 }
 
