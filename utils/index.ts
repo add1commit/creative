@@ -1,8 +1,11 @@
 import path from 'path'
 
+export { default as useConfig } from './use-config'
+export { default as useParser } from './use-parser'
+
 export const resolve = (...paths: string[]) => path.join(...paths)
 
-export function composePromise<T>(...fns: any) {
+export const composePromise = <T>(...fns: any) => {
   const init = fns.pop()
   return (...arg: string[]) =>
     fns
