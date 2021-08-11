@@ -12,6 +12,7 @@
     "@types/marked": "^2.0.4",
     "@types/module-alias": "^2.0.1",
     "@types/node": "^16.4.13",
+    "marked": "^2.1.3",
     "fs-extra": "^10.0.0",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "module-alias": "^2.2.2",
@@ -22,12 +23,11 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "marked": "^2.1.3",
     "pug": "^3.0.2"
   },
   "scripts": {
-    "dev": "nodemon -q",
-    "preview": "tsc & node lib/bin/server.js",
-    "build": "tsc -p ."
+    "collect": "make collect",
+    "dev": "make dev",
+    "build": "make build"
   }
 }
