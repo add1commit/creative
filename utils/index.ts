@@ -1,6 +1,6 @@
 import path from 'path'
 
-export const resolve = (...paths: string[]) => path.join(...paths)
+export const resolve = (dir: string) => path.join(__dirname, dir)
 
 export const composePromise = <T>(...fns: any) => {
   const init = fns.pop()

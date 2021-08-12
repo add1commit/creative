@@ -1,28 +1,30 @@
-import path from 'path'
 import fs from 'fs-extra'
+import md2html from 'marked'
 import { Archive, FlattenOutput } from '../typings/res'
-import { composePromise } from '../utils'
+import { composePromise, resolve } from '../utils'
+import { useSite } from '../hooks'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
-
-const resolve = (dir: string) => path.join(__dirname, dir)
 
 const RES_DIR = resolve('../res')
 const CACHE_DIR = resolve('../.cache/')
 const COLLECT_SUFFIX = '.json'
-const MORE_TAG = '<!-- more -->'
+const MORE_TAG_REGEX = /<!--.*?more.*-->/g
 
 const readResDir = async () => {
   return await fs.readdir(RES_DIR)
 }
 
 const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
+  const site = await useSite()
+
   return Promise.all(
     dirs
       .filter(dir => dir.endsWith('.md') || !dir.includes('.'))
       .map(async file => {
         const dirPath = `${root}/${file}`
         const isDirectory = fs.statSync(dirPath).isDirectory()
+        const url = dirPath.replace(RES_DIR, '').replace('.md', '')
 
         if (isDirectory) {
           const children = await fs.readdir(dirPath)
@@ -31,11 +33,17 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
         }
 
         const raw = await fs.readFile(dirPath, 'utf-8')
+
         let { metadata, content } = await extractMetadata(raw)
 
-        content = !!content.match(MORE_TAG) ? content.split(MORE_TAG)[0] : content
+        const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 
-        const url = dirPath.replace(RES_DIR, '').replace('.md', '')
+        content = md2html(content)
+
+        if (isMatchMoreRegex) {
+          content = content.split(MORE_TAG_REGEX)[0]
+          content += `<a href=${url} id=more-link>${site.label.more}</a>`
+        }
         return { title: metadata.title || file, url, metadata, content }
       })
   )
@@ -59,7 +67,7 @@ const archive = (data: Archive[]) => {
     }
 
     if (!item.metadata.date) {
-      console.error(`[metadata]: missing key "date" in (${item.name}) ${item.url}`)
+      console.error(`[metadata]: missing key "date" in (${item.name || item.title}) ${item.url}`)
       console.error('> Try to run "new Date().toUTCString()" in console to get "date".')
       const metadata = { ...item.metadata, date: new Date().toUTCString() }
       return { ...item, metadata }
