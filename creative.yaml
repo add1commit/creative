@@ -10,3 +10,9 @@ social:
 # Choose a theme
 theme:
   name: minimalbox
+
+# Custom Configuration
+label:
+  more: 查看更多
+  prev: 上一页
+  next: 下一页
