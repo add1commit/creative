@@ -1,10 +1,8 @@
-import { contentParser } from "../utils/parser"
-
 const usePosts = async () => {
   let posts = require('../.cache/posts.json')
   
   return {
-    all: await contentParser(posts),
+    all: posts,
     recentPosts: async () => {},
     categories: async () => {},
     category: async () => {},
