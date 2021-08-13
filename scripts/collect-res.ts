@@ -24,7 +24,6 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
       .map(async file => {
         const dirPath = `${root}/${file}`
         const isDirectory = fs.statSync(dirPath).isDirectory()
-        const url = dirPath.replace(RES_DIR, '').replace('.md', '')
 
         if (isDirectory) {
           const children = await fs.readdir(dirPath)
@@ -36,15 +35,18 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
 
         let { metadata, content } = await extractMetadata(raw)
 
+        const matchType = () => (!!root.match(/posts/g) ? 'posts' : 'pages')
+
+        const moreLink = dirPath.replace(RES_DIR, '').replace('/posts/', '/post/').replace('.md', '.html')
+
         const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 
         content = md2html(content)
-
         if (isMatchMoreRegex) {
           content = content.split(MORE_TAG_REGEX)[0]
-          content += `<a href=${url} id=more-link>${site.label.more}</a>`
+          content += `<a href=${moreLink} id=more-link>${site.label.more}</a>`
         }
-        return { title: metadata.title || file, url, metadata, content }
+        return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content }
       })
   )
 }
@@ -91,9 +93,8 @@ const flatten = async (data: Archive[]): Promise<FlattenOutput> => {
 
       children.forEach((item: any) => {
         if (!item.children) {
-          const type = item.url.match(/([^\/]+)/g)[0]
-          !output[type] && (output[type] = [])
-          output[type].push(item)
+          !output[item.type] && (output[item.type] = [])
+          output[item.type].push(item)
         }
 
         expanded(item.children)

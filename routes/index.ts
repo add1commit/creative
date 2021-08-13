@@ -11,7 +11,7 @@ class Routes {
 
   public exec() {
     this.router.get('/', this.renderMainPage)
-    this.router.get('/posts/*', this.renderPostPage)
+    this.router.get('/post/:category?/:name.html', this.renderPostPage)
   }
 
   public async initState() {
@@ -25,8 +25,10 @@ class Routes {
   }
 
   private renderPostPage = async (req: Request, res: Response) => {
-    const post = await usePost(req.originalUrl)
-    res.render('default/post', { post })
+    const site = this.props
+    const { category, name } = req.params
+    const post = await usePost(category, name)
+    res.render('default/post', { site, post })
   }
 }
 

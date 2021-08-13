@@ -4,6 +4,7 @@ export interface Archive {
 }
 
 export interface Archive {
+  type: string
   title: string
   url: string
   metadata: Metadata
