@@ -1,6 +1,9 @@
 import { Props } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
 import { usePost, usePosts, useSite } from '../hooks'
+
+require('express-async-errors')
+
 class Routes {
   public router: Router = express.Router()
   public props: Props | undefined = undefined
@@ -11,7 +14,7 @@ class Routes {
 
   public exec() {
     this.router.get('/', this.renderMainPage)
-    this.router.get('/post/:category?/:name.html', this.renderPostPage)
+    this.router.get('/post/:category?/:name', this.renderPostPage)
   }
 
   public async initState() {
@@ -25,10 +28,14 @@ class Routes {
   }
 
   private renderPostPage = async (req: Request, res: Response) => {
-    const site = this.props
+  try {
+    const { site } = this.props!
     const { category, name } = req.params
     const post = await usePost(category, name)
     res.render('default/post', { site, post })
+  } catch(e) {
+    res.send(e.message)
+  }
   }
 }
 

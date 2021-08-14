@@ -1,6 +1,6 @@
 html 
     head 
-        title= post.title
+        title= post.title + ' - ' + site.title
     body 
         h1= post.title
         .content!= post.content

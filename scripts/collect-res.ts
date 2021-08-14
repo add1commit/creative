@@ -37,7 +37,7 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
 
         const matchType = () => (!!root.match(/posts/g) ? 'posts' : 'pages')
 
-        const moreLink = dirPath.replace(RES_DIR, '').replace('/posts/', '/post/').replace('.md', '.html')
+        const moreLink = dirPath.replace(RES_DIR, '').replace('/posts/', '/post/').replace('.md', '')
 
         const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 

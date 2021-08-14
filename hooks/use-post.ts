@@ -5,7 +5,7 @@ import { resolve } from '../utils'
 const parser = require('markdown-yaml-metadata-parser')
 
 const usePost = async (category: string, postName: string) => {
-  try {
+  
     const path = resolve(`../res/posts/${category || ''}/${postName}.md`)
     const raw = await fs.readFile(path, { encoding: 'utf-8' })
     if (!raw) throw new Error(`Failed to load post.`)
@@ -23,7 +23,7 @@ const usePost = async (category: string, postName: string) => {
       raw,
       metadata
     }
-  } catch (err) {}
+
 }
 
 export default usePost
