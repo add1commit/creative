@@ -44,7 +44,7 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
         content = md2html(content)
         if (isMatchMoreRegex) {
           content = content.split(MORE_TAG_REGEX)[0]
-          content += `<a href=${moreLink} id=more-link>${site.label.more}</a>`
+          content += `<a href='${moreLink}' id=more-link>${site.label.more}</a>`
         }
         return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content }
       })
