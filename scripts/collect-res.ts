@@ -7,7 +7,7 @@ import { useSite } from '../hooks'
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
 const RES_DIR = resolve('../res')
-const CACHE_DIR = resolve('../.cache/')
+const DATA_DIR = resolve('../data/')
 const COLLECT_SUFFIX = '.json'
 const MORE_TAG_REGEX = /<!--.*?more.*-->/g
 
@@ -44,7 +44,7 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
         content = md2html(content)
         if (isMatchMoreRegex) {
           content = content.split(MORE_TAG_REGEX)[0]
-          content += `<a href='${moreLink}' id=more-link>${site.label.more}</a>`
+          content += `<a href='${moreLink}' id=more-link>${site.posts.label.more}</a>`
         }
         return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content }
       })
@@ -107,13 +107,13 @@ const flatten = async (data: Archive[]): Promise<FlattenOutput> => {
 }
 
 const sort = async (data: FlattenOutput) => {
-  await fs.ensureDir(CACHE_DIR)
+  await fs.ensureDir(DATA_DIR)
 
   Object.keys(data).forEach(async key => {
     data[key] = data[key].sort(
       (pre: Archive, next: Archive) => (+new Date(next.metadata.date) as any) - (new Date(pre.metadata.date) as any)
     )
-    await fs.writeJson(`${CACHE_DIR}${key}${COLLECT_SUFFIX}`, data[key])
+    await fs.writeJson(`${DATA_DIR}${key}${COLLECT_SUFFIX}`, data[key])
   })
 }
 
