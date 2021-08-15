@@ -1,4 +1,4 @@
-import { Props } from '../typings/prop'
+import { Site } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
 import { usePost, usePosts, useSite } from '../hooks'
 
@@ -6,7 +6,7 @@ require('express-async-errors')
 
 class Routes {
   public router: Router = express.Router()
-  public props: Props | undefined = undefined
+  public state: Site | undefined = undefined
   constructor() {
     this.initState()
     this.exec()
@@ -14,28 +14,31 @@ class Routes {
 
   public exec() {
     this.router.get('/', this.renderMainPage)
+    this.router.get('/page/:num', this.renderMainPage)
     this.router.get('/post/:category?/:name', this.renderPostPage)
   }
 
   public async initState() {
-    const site = await useSite()
-    const posts = await usePosts()
-    this.props = { site, posts }
+    this.state = await useSite()
   }
 
   private renderMainPage = async (req: Request, res: Response) => {
-    res.render('default', this.props)
+    const { num } = req.params
+
+    const site = this.state
+    const posts = new usePosts(num)
+    console.log(posts.paginator)
+    res.render('default', { site, posts })
   }
 
   private renderPostPage = async (req: Request, res: Response) => {
-  try {
-    const { site } = this.props!
-    const { category, name } = req.params
-    const post = await usePost(category, name)
-    res.render('default/post', { site, post })
-  } catch(e) {
-    res.send(e.message)
-  }
+    try {
+      const site = this.state
+      const post = await usePost(req.originalUrl)
+      res.render('default/post', { site, post })
+    } catch (e) {
+      res.send(e.message)
+    }
   }
 }
 

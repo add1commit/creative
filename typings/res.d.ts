@@ -9,6 +9,8 @@ export interface Archive {
   url: string
   metadata: Metadata
   content: string
+  _DATA__: string
+  raw: string
 }
 
 export interface Metadata {

@@ -1,8 +1,3 @@
-export interface Props {
-  site: Site
-  posts: Posts
-}
-
 export interface Site {
   title: string
   author: string
@@ -17,8 +12,8 @@ export interface Theme {
 }
 
 export interface Posts {
-  all: Object | undefined
-  recentPosts: () => Promise<void>
+  list: Object | undefined
+  recent: () => Promise<void>
   categories: () => Promise<void>
   category: () => Promise<void>
   tags: () => Promise<void>
