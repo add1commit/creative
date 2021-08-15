@@ -7,7 +7,7 @@ import { useSite } from '../hooks'
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
 const RES_DIR = resolve('../res')
-const DATA_DIR = resolve('../data/')
+const DATA_DIR = resolve('../.data/')
 const COLLECT_SUFFIX = '.json'
 const MORE_TAG_REGEX = /<!--.*?more.*-->/g
 
@@ -41,12 +41,13 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
 
         const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 
-        content = md2html(content)
+        let _DATA__ = md2html(content)
+
         if (isMatchMoreRegex) {
-          content = content.split(MORE_TAG_REGEX)[0]
+          content = _DATA__.split(MORE_TAG_REGEX)[0]
           content += `<a href='${moreLink}' id=more-link>${site.posts.label.more}</a>`
         }
-        return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content }
+        return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content, _DATA__, raw }
       })
   )
 }
