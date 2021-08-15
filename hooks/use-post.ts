@@ -1,29 +1,59 @@
-import fs from 'fs-extra'
-import md2html from 'marked'
-import { resolve } from '../utils'
+import { Archive } from '../typings/res'
+import _ from 'lodash'
 
-const parser = require('markdown-yaml-metadata-parser')
+export class usePosts {
+  private page: number | string
 
-const usePost = async (category: string, postName: string) => {
-  
-    const path = resolve(`../res/posts/${category || ''}/${postName}.md`)
-    const raw = await fs.readFile(path, { encoding: 'utf-8' })
-    if (!raw) throw new Error(`Failed to load post.`)
+  public list = require('../.data/posts.json')
+  public paginator = {}
 
-    const { metadata, content } = await parser(raw)
-    const { title, date, tags } = metadata
+  constructor(page: number | string) {
+    this.page = page || 1
+  }
+  public chunk(size: number = 10) {
+    const index = Number(this.page) - 1 || 0
+    const output = _.chunk(this.list, size)
+    const hasPre = !!output[index - 1]
+    const hasNext = !!output[index + 2]
 
-    const post = md2html(content)
-
-    return {
-      title,
-      date,
-      tags: tags || [],
-      content: post,
-      raw,
-      metadata
+    this.paginator = {
+      page: index + 1,
+      next_page: hasNext && index + 2,
+      previous_page: hasPre && index - 2,
+      has_pre: hasPre,
+      has_next: hasNext,
+      total_count: output.length,
+      per_page: size,
+      pre_url: hasPre && `page/${index}`,
+      next_url: hasNext && `page/${index + 2}`
     }
-
+    return output[index] || []
+  }
+  public recent(limit: number = 10) {
+    return this.list.length <= limit ? this.list : this.list.slice(0, limit)
+  }
+  public categories() {}
+  public category() {}
+  public tags() {}
+  public tag() {}
 }
 
-export default usePost
+export const usePost = async (url: string) => {
+  const posts = require('../.data/posts.json')
+
+  const data = posts.find((post: Archive) => post.url === decodeURIComponent(url))
+
+  if (!data) throw new Error(`Failed to load post.`)
+
+  const { metadata, _DATA__, raw } = data
+  const { title, date, tags } = metadata
+
+  return {
+    title,
+    date,
+    tags: tags || [],
+    content: _DATA__,
+    raw,
+    metadata
+  }
+}
