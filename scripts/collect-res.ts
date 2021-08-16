@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import md2html from 'marked'
 import { Archive, FlattenOutput } from '../typings/res'
 import { composePromise, resolve } from '../utils'
-import { useSite } from '../hooks'
+import { State } from '../hooks'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
@@ -16,7 +16,7 @@ const readResDir = async () => {
 }
 
 const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
-  const site = await useSite()
+  const site = await State()
 
   return Promise.all(
     dirs
@@ -72,14 +72,13 @@ const archive = (data: Archive[]) => {
     if (!item.metadata.date) {
       console.error(`[metadata]: missing key "date" in (${item.name || item.title}) ${item.url}`)
       console.error('> Try to run "new Date().toUTCString()" in console to get "date".')
-      const metadata = { ...item.metadata, date: new Date().toUTCString() }
-      return { ...item, metadata }
+      return { ...item, date: new Date().toUTCString() }
     }
     if (`${new Date(item.metadata.date)}` === 'Invalid Date') {
       console.error(`[metadata]: format error "date" in (${item.name}) ${item.url}`)
       console.error('> Try to run "new Date().toUTCString()" in console to get "date".')
     }
-    return item
+    return { ...item, date: new Date(item.metadata.date).toUTCString() }
   })
 }
 

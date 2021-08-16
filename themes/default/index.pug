@@ -4,6 +4,9 @@ html
     body 
         for post in posts.chunk(7)
             h1= post.title
+       
+
+            span=  format(post.date, 'MMMM D, YYYY')
             .content!= post.content
 
         if posts.paginator.has_prev

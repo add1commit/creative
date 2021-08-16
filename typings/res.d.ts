@@ -6,6 +6,7 @@ export interface Archive {
 export interface Archive {
   type: string
   title: string
+  date: string
   url: string
   metadata: Metadata
   content: string
