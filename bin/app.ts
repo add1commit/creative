@@ -22,10 +22,12 @@ class App {
     })
   }
 
-  private routes(routes: { forEach: (arg0: (route: any) => void) => void }) {
-    routes.forEach(route => {
-      this.app.use('/', route.router)
+  private routes(route: any) {
+    this.app.use(req => {
+      console.log(`Accessing ${req.originalUrl} via ${req.method} `)
     })
+
+    this.app.use('/', route.router)
   }
 
   private assets() {
