@@ -23,8 +23,9 @@ class App {
   }
 
   private routes(route: any) {
-    this.app.use(req => {
+    this.app.use((req, res, next) => {
       console.log(`Accessing ${req.originalUrl} via ${req.method} `)
+      next()
     })
 
     this.app.use('/', route.router)
