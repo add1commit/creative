@@ -1,13 +1,15 @@
-import type { SiteState } from '../typings/prop'
+import type { SiteInterface, ToolsInterface } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
-import { Post, Posts, State, Utils } from '../hooks'
+import { Post, Posts, State, Tools } from '../hooks'
 
 require('express-async-errors')
 
 class Routes {
   public router: Router = express.Router()
-  public state: SiteState | undefined = undefined
-  public utils = {}
+
+  public state: SiteInterface | undefined = undefined
+  public tools: ToolsInterface | undefined = undefined
+
   constructor() {
     this.initState()
     this.exec()
@@ -21,22 +23,22 @@ class Routes {
 
   public async initState() {
     this.state = await State()
-    this.utils = new Utils()
+    this.tools = Tools
   }
 
   private renderMainPage = async (req: Request, res: Response) => {
-    const { state: site, utils } = this
+    const { state: site, tools } = this
     const posts = new Posts(req.params.num)
 
-    res.render('default', { site, posts, ...utils })
+    res.render('default', { site, posts, ...tools })
   }
 
   private renderPostPage = async (req: Request, res: Response) => {
     try {
-      const { state: site, utils } = this
+      const { state: site, tools } = this
       const post = await Post(req.originalUrl)
 
-      res.render('default/post', { site, post, ...utils })
+      res.render('default/post', { site, post, ...tools })
     } catch (e) {
       res.send(e.message)
     }
