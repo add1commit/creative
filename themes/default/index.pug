@@ -2,10 +2,11 @@ html
     head 
         title= site.title
     body 
-        for post in posts.chunk(2)
+        for post in posts.chunk(7)
             h1= post.title
             .content!= post.content
 
-        h1= posts.paginator.page
-        h1= posts.paginator.pre_url
-        a(href= posts.paginator.next_url) 下一页
+        if posts.paginator.has_prev
+            a(href= posts.paginator.prev_url)= site.posts.label.prev
+        if posts.paginator.has_next
+            a(href= posts.paginator.next_url)= site.posts.label.next
