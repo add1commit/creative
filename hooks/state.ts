@@ -6,7 +6,7 @@ export const resolve = (...paths: string[]) => path.join(...paths)
 
 const CONFIG_DIR = resolve(__dirname, '../creative.yaml')
 
-const useSite = async () => {
+const State = async () => {
   try {
     const output = await fs.readFile(CONFIG_DIR, { encoding: 'utf-8' })
     return YAML.parse(output)
@@ -15,4 +15,4 @@ const useSite = async () => {
   }
 }
 
-export default useSite
+export default State
