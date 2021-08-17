@@ -1,6 +1,6 @@
 import type { SiteInterface, ToolsInterface } from '../typings/prop'
 import express, { Request, Response, Router } from 'express'
-import { Post, Posts, State, Tools } from '../hooks'
+import { Post, Posts, Page, State, Tools } from '../hooks'
 
 require('express-async-errors')
 
@@ -19,6 +19,7 @@ class Routes {
     this.router.get('/', this.renderMainPage)
     this.router.get('/page/:num', this.renderMainPage)
     this.router.get('/post/:category?/:name', this.renderPostPage)
+    this.router.get('/:custom', this.renderCustomPage)
   }
 
   public async initState() {
@@ -39,6 +40,18 @@ class Routes {
       const post = await Post(req.originalUrl)
 
       res.render('default/post', { site, post, ...tools })
+    } catch (e) {
+      res.send(e.message)
+    }
+  }
+
+  private renderCustomPage = async (req: Request, res: Response) => {
+    try {
+      const { params, originalUrl } = req
+      const { state: site, tools } = this
+      const page = await Page(originalUrl)
+
+      res.render(`default/${params.custom}`, { site, page, ...tools })
     } catch (e) {
       res.send(e.message)
     }
