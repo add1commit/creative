@@ -6,9 +6,9 @@ export const resolve = (...paths: string[]) => path.join(...paths)
 
 const CONFIG_DIR = resolve(__dirname, '../creative.yaml')
 
-const State = async () => {
+const State = () => {
   try {
-    const output = await fs.readFile(CONFIG_DIR, { encoding: 'utf-8' })
+    const output = fs.readFileSync(CONFIG_DIR, { encoding: 'utf-8' })
     return YAML.parse(output)
   } catch (error) {
     throw new Error('Unable to load config file')
