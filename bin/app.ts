@@ -10,6 +10,7 @@ class App {
     this.app = express()
     this.port = props.port
     // this.middlewares(props.middleWares)
+    this.app.locals = props.options || {}
     this.routes(props.routes)
 
     this.assets()
