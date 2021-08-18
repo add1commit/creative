@@ -2,8 +2,9 @@ YARN := yarn
 TS := tsc
 NODE := $(YARN) ts-node
 
-collect:
-	${NODE} scripts/collect-res.ts
+prepare:
+	${NODE} scripts/sync.ts
+	${NODE} scripts/collect.ts
 
 dev:
 	${NODE} ./bin/server.ts
