@@ -1,7 +1,7 @@
 import { Archive } from '../typings/res'
 
 const Post = async (url: string) => {
-  const posts = require('../.data/posts.json')
+  const posts = require('../lib/data/posts.json')
 
   const data = posts.find((post: Archive) => post.url === decodeURIComponent(url))
 
