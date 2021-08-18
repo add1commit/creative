@@ -22,7 +22,7 @@ export const composePromise = <T>(...fns: any) => {
 
 export const render = async (res: Response, page: string, options?: object | undefined) => {
   return new Promise((resolve, reject) => {
-    res.render(`${page}`, options, (err, result) => (err ? reject(err) : resolve(result)))
+    res.render(`${page}`, options, (err: Error, html: string) => (err ? reject(err) : resolve(res.send(html))))
   })
 }
 
