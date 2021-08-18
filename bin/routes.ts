@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from 'express'
-import { Post, Posts, Page } from '../hooks'
+import { PostService, PostsService, PageService } from '../service'
 import { render } from '../utils'
 
 require('express-async-errors')
@@ -16,7 +16,7 @@ class Routes {
 
   private renderMainPage = async (req: Request, res: Response) => {
     try {
-      const posts = new Posts(req.params.num)
+      const posts = new PostsService(req.params.num)
       await render(res, 'index', { posts })
     } catch (error) {
       res.render('error', { error })
@@ -25,7 +25,7 @@ class Routes {
 
   private renderPostPage = async (req: Request, res: Response) => {
     try {
-      const post = await Post(req.originalUrl)
+      const post = await PostService(req.originalUrl)
       await render(res, 'post', { post })
     } catch (error) {
       res.render('error', { error })
@@ -35,7 +35,7 @@ class Routes {
   private renderCustomPage = async (req: Request, res: Response) => {
     try {
       const { params, originalUrl } = req
-      const page = await Page(originalUrl)
+      const page = await PageService(originalUrl)
       await render(res, `${params.custom}`, { page })
     } catch (error) {
       res.render('error', { error })

@@ -1,6 +1,6 @@
 import { Archive } from '../typings/res'
 
-const Page = async (url: string) => {
+const PageService = async (url: string) => {
   const pages = require('../lib/data/pages.json')
 
   const data = pages.find((page: Archive) => page.url === decodeURIComponent(url))
@@ -20,4 +20,4 @@ const Page = async (url: string) => {
   }
 }
 
-export default Page
+export default PageService

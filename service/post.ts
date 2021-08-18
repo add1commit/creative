@@ -1,6 +1,6 @@
 import { Archive } from '../typings/res'
 
-const Post = async (url: string) => {
+const PostService = async (url: string) => {
   const posts = require('../lib/data/posts.json')
 
   const data = posts.find((post: Archive) => post.url === decodeURIComponent(url))
@@ -20,4 +20,4 @@ const Post = async (url: string) => {
   }
 }
 
-export default Post 
+export default PostService

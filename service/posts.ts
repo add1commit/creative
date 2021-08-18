@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export class Posts {
+export class PostsService {
   private page: number | string
 
   public list = require('../lib/data/posts.json')
@@ -49,4 +49,4 @@ export class Posts {
   }
 }
 
-export default Posts
+export default PostsService
