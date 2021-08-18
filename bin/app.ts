@@ -1,11 +1,12 @@
 import { AppProps } from '@/typings/app'
 import express, { Application } from 'express'
-import { state, tools, resolve } from '../utils'
+import { tools, resolve } from '../utils'
 class App {
   public app: Application
   public port: number = 3000
 
   constructor(props: AppProps) {
+    const state = require('../state.json')
     this.app = express()
     this.port = props.port
     // this.middlewares(props.middleWares)
@@ -31,11 +32,11 @@ class App {
   }
 
   private assets() {
-    this.app.use(express.static('lib/template'))
+    this.app.use(express.static('/template'))
   }
 
   private template() {
-    this.app.set('views', resolve('../lib/template'))
+    this.app.set('views', resolve('../template'))
     this.app.set('view engine', 'pug')
   }
 
