@@ -1,13 +1,12 @@
 import fs from 'fs-extra'
 import md2html from 'marked'
 import { Archive, FlattenOutput } from '../typings/res'
-import { composePromise, resolve } from '../utils'
-import { State } from '../hooks'
+import { composePromise, resolve, state } from '../utils'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
 const RES_DIR = resolve('../res')
-const DATA_DIR = resolve('../.data/')
+const DATA_DIR = resolve('../lib/data/')
 const COLLECT_SUFFIX = '.json'
 const MORE_TAG_REGEX = /<!--.*?more.*-->/g
 
@@ -16,7 +15,6 @@ const readResDir = async () => {
 }
 
 const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
-  const site = await State()
 
   return Promise.all(
     dirs
@@ -45,7 +43,7 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
 
         if (isMatchMoreRegex) {
           content = _DATA__.split(MORE_TAG_REGEX)[0]
-          content += `<a href='${moreLink}' id=more-link>${site.posts.label.more}</a>`
+          content += `<a href='${moreLink}' id=more-link>${state.posts.label.more}</a>`
         }
         return { type: matchType(), title: metadata.title || file, url: moreLink, metadata, content, _DATA__, raw }
       })
