@@ -9,7 +9,7 @@ social:
 
 # Choose a theme
 theme:
-  name: minimalbox
+  name: default
 
 # Custom Configuration
 posts:
