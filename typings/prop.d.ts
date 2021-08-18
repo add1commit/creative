@@ -1,4 +1,4 @@
-export interface SiteInterface {
+export interface StateInterface {
   title: string
   author: string
   description: string
