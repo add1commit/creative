@@ -3,7 +3,7 @@ import _ from 'lodash'
 export class PostsService {
   private page: number | string
 
-  public list = require('../lib/data/posts.json')
+  public list = require('../data/posts.json')
 
   public paginator = {}
 
