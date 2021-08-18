@@ -29,7 +29,7 @@
     "pug": "^3.0.2"
   },
   "scripts": {
-    "collect": "make collect",
+    "prepare": "make prepare",
     "dev": "make dev",
     "build": "make build"
   }
