@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import md2html from 'marked'
 import { Archive, FlattenOutput } from '../typings/bucket'
-import { composePromise, resolve, state } from '../utils'
+import { composePromise, resolve } from '../utils'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
@@ -15,6 +15,7 @@ const readResDir = async () => {
 }
 
 const collectMeta = async (dirs: string[], root = BUCKET_DIR): Promise<any> => {
+  const state = require('../lib/state.json')
 
   return Promise.all(
     dirs
@@ -35,7 +36,11 @@ const collectMeta = async (dirs: string[], root = BUCKET_DIR): Promise<any> => {
 
         const matchType = () => (!!root.match(/posts/g) ? 'posts' : 'pages')
 
-        const moreLink = dirPath.replace(BUCKET_DIR, '').replace('/posts/', '/post/').replace('/pages/', '/').replace('.md', '')
+        const moreLink = dirPath
+          .replace(BUCKET_DIR, '')
+          .replace('/posts/', '/post/')
+          .replace('/pages/', '/')
+          .replace('.md', '')
 
         const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 
