@@ -1,7 +1,7 @@
 import path from 'path'
 import { AppProps } from '@/typings/app'
 import express, { Application } from 'express'
-
+import { state, tools, resolve } from '../utils'
 class App {
   public app: Application
   public port: number = 3000
@@ -10,7 +10,7 @@ class App {
     this.app = express()
     this.port = props.port
     // this.middlewares(props.middleWares)
-    this.app.locals = props.options || {}
+    this.app.locals = {site: state, ...tools}
     this.routes(props.routes)
 
     this.assets()
@@ -37,7 +37,7 @@ class App {
   }
 
   private template() {
-    this.app.set('views', path.join(__dirname, '../', '/themes'))
+    this.app.set('views', resolve('../lib/template'))
     this.app.set('view engine', 'pug')
   }
 

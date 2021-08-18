@@ -1,15 +1,13 @@
 import 'module-alias/register'
 import App from './app'
-import Routes from '../routes'
-import { State, Tools } from '../hooks'
+import route from './routes'
 
 require('express-async-errors')
 
 const app = new App({
-  port: 3002,
+  port: 6000,
   middleWares: [],
-  routes: new Routes(),
-  options: { site: State(), ...Tools }
+  routes: route,
 })
 
 app.listen()
