@@ -9,7 +9,7 @@ const Page = async (url: string) => {
 
   const { metadata, _DATA__, raw } = data
   const { title, date, tags } = metadata
-  console.log(title, date)
+
   return {
     title,
     date,
