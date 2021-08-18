@@ -1,20 +1,20 @@
 import fs from 'fs-extra'
 import md2html from 'marked'
-import { Archive, FlattenOutput } from '../typings/res'
+import { Archive, FlattenOutput } from '../typings/bucket'
 import { composePromise, resolve, state } from '../utils'
 
 const extractMetadata = require('markdown-yaml-metadata-parser')
 
-const RES_DIR = resolve('../res')
+const BUCKET_DIR = resolve('../bucket')
 const DATA_DIR = resolve('../lib/data/')
 const COLLECT_SUFFIX = '.json'
 const MORE_TAG_REGEX = /<!--.*?more.*-->/g
 
 const readResDir = async () => {
-  return await fs.readdir(RES_DIR)
+  return await fs.readdir(BUCKET_DIR)
 }
 
-const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
+const collectMeta = async (dirs: string[], root = BUCKET_DIR): Promise<any> => {
 
   return Promise.all(
     dirs
@@ -35,7 +35,7 @@ const collectMeta = async (dirs: string[], root = RES_DIR): Promise<any> => {
 
         const matchType = () => (!!root.match(/posts/g) ? 'posts' : 'pages')
 
-        const moreLink = dirPath.replace(RES_DIR, '').replace('/posts/', '/post/').replace('/pages/', '/').replace('.md', '')
+        const moreLink = dirPath.replace(BUCKET_DIR, '').replace('/posts/', '/post/').replace('/pages/', '/').replace('.md', '')
 
         const isMatchMoreRegex = !!content.match(MORE_TAG_REGEX)
 

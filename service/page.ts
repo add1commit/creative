@@ -1,4 +1,4 @@
-import { Archive } from '../typings/res'
+import { Archive } from '../typings/bucket'
 
 const PageService = async (url: string) => {
   const pages = require('../lib/data/pages.json')

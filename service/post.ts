@@ -1,4 +1,4 @@
-import { Archive } from '../typings/res'
+import { Archive } from '../typings/bucket'
 
 const PostService = async (url: string) => {
   const posts = require('../lib/data/posts.json')
