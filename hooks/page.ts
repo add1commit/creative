@@ -1,7 +1,7 @@
 import { Archive } from '../typings/res'
 
 const Page = async (url: string) => {
-  const pages = require('../lib/data/data/pages.json')
+  const pages = require('../lib/data/pages.json')
 
   const data = pages.find((page: Archive) => page.url === decodeURIComponent(url))
 

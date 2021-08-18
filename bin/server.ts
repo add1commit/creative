@@ -5,7 +5,7 @@ import route from './routes'
 require('express-async-errors')
 
 const app = new App({
-  port: 6000,
+  port: 4000,
   middleWares: [],
   routes: route,
 })

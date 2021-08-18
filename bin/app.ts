@@ -1,4 +1,3 @@
-import path from 'path'
 import { AppProps } from '@/typings/app'
 import express, { Application } from 'express'
 import { state, tools, resolve } from '../utils'
@@ -10,7 +9,7 @@ class App {
     this.app = express()
     this.port = props.port
     // this.middlewares(props.middleWares)
-    this.app.locals = {site: state, ...tools}
+    this.app.locals = { site: state, ...tools }
     this.routes(props.routes)
 
     this.assets()
@@ -28,12 +27,11 @@ class App {
       console.log(`Accessing ${req.originalUrl} via ${req.method} `)
       next()
     })
-
     this.app.use('/', route.router)
   }
 
   private assets() {
-    this.app.use(express.static('themes'))
+    this.app.use(express.static('lib/template'))
   }
 
   private template() {
