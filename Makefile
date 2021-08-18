@@ -1,13 +1,13 @@
 YARN := yarn
 TS := tsc
-NODE := $(YARN) ts-node
+NODE := node
+TSNODE := ts-node
 
-prepare:
-	${NODE} scripts/sync.ts
-	${NODE} scripts/collect.ts
-
-dev:
-	${NODE} ./bin/server.ts
 
 build:
+	${TSNODE} scripts/sync.ts
+	${TSNODE} scripts/collect.ts
 	${TS} -p .
+
+preview:
+	${NODE} ./lib/bin/server.js
